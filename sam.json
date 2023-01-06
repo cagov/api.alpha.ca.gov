@@ -1,0 +1,960 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "Exported by architect/package@8.2.2 on 2023-01-06T21:20:19.354Z",
+  "Resources": {
+    "Role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ArcGlobalPolicy",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                    "logs:DescribeLogStreams"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "ArcStaticBucketPolicy",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:PutObjectAcl",
+                    "s3:DeleteObject",
+                    "s3:ListBucket"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:s3:::${bukkit}",
+                        {
+                          "bukkit": {
+                            "Ref": "StaticBucket"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:s3:::${bukkit}/*",
+                        {
+                          "bukkit": {
+                            "Ref": "StaticBucket"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "StaticBucketParam": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Name": {
+          "Fn::Sub": [
+            "/${AWS::StackName}/static/${key}",
+            {
+              "key": "bucket"
+            }
+          ]
+        },
+        "Value": {
+          "Ref": "StaticBucket"
+        }
+      }
+    },
+    "StaticFingerprintParam": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Name": {
+          "Fn::Sub": [
+            "/${AWS::StackName}/static/${key}",
+            {
+              "key": "fingerprint"
+            }
+          ]
+        },
+        "Value": "false"
+      }
+    },
+    "ParameterStorePolicy": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": "Role",
+      "Properties": {
+        "PolicyName": "ArcParameterStorePolicy",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParametersByPath",
+                "ssm:GetParameter"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}",
+                  {}
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParametersByPath",
+                "ssm:GetParameter"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}/*",
+                  {}
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParametersByPath",
+                "ssm:GetParameter"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}/*/*",
+                  {}
+                ]
+              }
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "Role"
+          }
+        ]
+      }
+    },
+    "HTTP": {
+      "Type": "AWS::Serverless::HttpApi",
+      "Properties": {
+        "StageName": "$default",
+        "DefinitionBody": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          "paths": {
+            "/StateHolidayCalendar/{route}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetStateHolidayCalendarRouteHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/countyfromzip/{zip}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCountyfromzipZipHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/LaneClosures/{route}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetLaneClosuresRouteHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/caziplookup/{zip}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCaziplookupZipHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/CaZipCityCountyTypeAhead": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCaZipCityCountyTypeAheadHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/FoodBanks": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetFoodBanksHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/HomelessShelters": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetHomelessSheltersHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/WaterSystem": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWaterSystemHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/WaterSystemHistory": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWaterSystemHistoryHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndexHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              }
+            },
+            "/_static/{proxy+}": {
+              "get": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "1.0",
+                  "type": "http_proxy",
+                  "httpMethod": "GET",
+                  "uri": {
+                    "Fn::Sub": [
+                      "https://${bukkit}.s3.${AWS::Region}.amazonaws.com/{proxy}",
+                      {
+                        "bukkit": {
+                          "Ref": "StaticBucket"
+                        }
+                      }
+                    ]
+                  },
+                  "connectionType": "INTERNET",
+                  "timeoutInMillis": 30000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetStateHolidayCalendarRouteHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-StateHolidayCalendar-000route",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetStateHolidayCalendarRouteHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/StateHolidayCalendar/{route}",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetCountyfromzipZipHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-countyfromzip-000zip",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetCountyfromzipZipHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/countyfromzip/{zip}",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetLaneClosuresRouteHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-LaneClosures-000route",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetLaneClosuresRouteHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/LaneClosures/{route}",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetCaziplookupZipHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-caziplookup-000zip",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetCaziplookupZipHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/caziplookup/{zip}",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetCaZipCityCountyTypeAheadHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-CaZipCityCountyTypeAhead",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetCaZipCityCountyTypeAheadHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/CaZipCityCountyTypeAhead",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetFoodBanksHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-FoodBanks",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetFoodBanksHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/FoodBanks",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetHomelessSheltersHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-HomelessShelters",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetHomelessSheltersHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/HomelessShelters",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetWaterSystemHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-WaterSystem",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetWaterSystemHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/WaterSystem",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetWaterSystemHistoryHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-WaterSystemHistory",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetWaterSystemHistoryHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/WaterSystemHistory",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetIndexHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/get-index",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            },
+            "ARC_STATIC_SPA": false
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "GetIndexHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/",
+              "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "StaticBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerEnforced"
+            }
+          ]
+        },
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "ErrorDocument": "404.html"
+        }
+      }
+    },
+    "StaticBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "StaticBucket"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject"
+              ],
+              "Effect": "Allow",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:s3:::${bukkit}/*",
+                    {
+                      "bukkit": {
+                        "Ref": "StaticBucket"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "Sid": "PublicReadGetObject"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "API": {
+      "Description": "API Gateway (HTTP)",
+      "Value": {
+        "Fn::Sub": [
+          "https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com",
+          {
+            "ApiId": {
+              "Ref": "HTTP"
+            }
+          }
+        ]
+      }
+    },
+    "ApiId": {
+      "Description": "API ID (ApiId)",
+      "Value": {
+        "Ref": "HTTP"
+      }
+    },
+    "BucketURL": {
+      "Description": "Bucket URL",
+      "Value": {
+        "Fn::Sub": [
+          "http://${bukkit}.s3-website-${AWS::Region}.amazonaws.com",
+          {
+            "bukkit": {
+              "Ref": "StaticBucket"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
