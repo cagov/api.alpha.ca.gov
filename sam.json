@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Transform": "AWS::Serverless-2016-10-31",
-  "Description": "Exported by architect/package@8.2.2 on 2023-01-06T21:20:19.354Z",
+  "Description": "Exported by architect/package@8.2.2 on 2023-01-07T00:33:19.245Z",
   "Resources": {
     "Role": {
       "Type": "AWS::IAM::Role",
@@ -188,6 +188,17 @@
                   },
                   "connectionType": "INTERNET"
                 }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsStateHolidayCalendarRouteHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
               }
             },
             "/countyfromzip/{zip}": {
@@ -198,6 +209,17 @@
                   "httpMethod": "POST",
                   "uri": {
                     "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCountyfromzipZipHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsCountyfromzipZipHTTPLambda.Arn}/invocations"
                   },
                   "connectionType": "INTERNET"
                 }
@@ -214,6 +236,17 @@
                   },
                   "connectionType": "INTERNET"
                 }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsLaneClosuresRouteHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
               }
             },
             "/caziplookup/{zip}": {
@@ -224,6 +257,17 @@
                   "httpMethod": "POST",
                   "uri": {
                     "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCaziplookupZipHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsCaziplookupZipHTTPLambda.Arn}/invocations"
                   },
                   "connectionType": "INTERNET"
                 }
@@ -240,6 +284,17 @@
                   },
                   "connectionType": "INTERNET"
                 }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsCaZipCityCountyTypeAheadHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
               }
             },
             "/FoodBanks": {
@@ -250,6 +305,17 @@
                   "httpMethod": "POST",
                   "uri": {
                     "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetFoodBanksHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsFoodBanksHTTPLambda.Arn}/invocations"
                   },
                   "connectionType": "INTERNET"
                 }
@@ -266,6 +332,17 @@
                   },
                   "connectionType": "INTERNET"
                 }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsHomelessSheltersHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
               }
             },
             "/WaterSystem": {
@@ -279,6 +356,17 @@
                   },
                   "connectionType": "INTERNET"
                 }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsWaterSystemHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
               }
             },
             "/WaterSystemHistory": {
@@ -289,6 +377,17 @@
                   "httpMethod": "POST",
                   "uri": {
                     "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWaterSystemHistoryHTTPLambda.Arn}/invocations"
+                  },
+                  "connectionType": "INTERNET"
+                }
+              },
+              "options": {
+                "x-amazon-apigateway-integration": {
+                  "payloadFormatVersion": "2.0",
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": {
+                    "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OptionsWaterSystemHistoryHTTPLambda.Arn}/invocations"
                   },
                   "connectionType": "INTERNET"
                 }
@@ -348,7 +447,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -402,7 +501,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -456,7 +555,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -510,7 +609,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -564,7 +663,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -618,7 +717,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -672,7 +771,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -726,7 +825,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -780,7 +879,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -834,7 +933,7 @@
         "Timeout": 5,
         "Environment": {
           "Variables": {
-            "ARC_APP_NAME": "api-alpha-ca-gov",
+            "ARC_APP_NAME": "alpha-api",
             "ARC_ENV": "production",
             "ARC_ROLE": {
               "Ref": "Role"
@@ -865,6 +964,492 @@
             "Properties": {
               "Path": "/",
               "Method": "GET",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsStateHolidayCalendarRouteHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-StateHolidayCalendar-000route",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsStateHolidayCalendarRouteHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/StateHolidayCalendar/{route}",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsCountyfromzipZipHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-countyfromzip-000zip",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsCountyfromzipZipHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/countyfromzip/{zip}",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsLaneClosuresRouteHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-LaneClosures-000route",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsLaneClosuresRouteHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/LaneClosures/{route}",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsCaziplookupZipHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-caziplookup-000zip",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsCaziplookupZipHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/caziplookup/{zip}",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsCaZipCityCountyTypeAheadHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-CaZipCityCountyTypeAhead",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsCaZipCityCountyTypeAheadHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/CaZipCityCountyTypeAhead",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsFoodBanksHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-FoodBanks",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsFoodBanksHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/FoodBanks",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsHomelessSheltersHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-HomelessShelters",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsHomelessSheltersHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/HomelessShelters",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsWaterSystemHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-WaterSystem",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsWaterSystemHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/WaterSystem",
+              "Method": "OPTIONS",
+              "ApiId": {
+                "Ref": "HTTP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "OptionsWaterSystemHistoryHTTPLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/aaronhans/dev/api.alpha.ca.gov/src/http/options-WaterSystemHistory",
+        "Runtime": "nodejs16.x",
+        "Architectures": [
+          "x86_64"
+        ],
+        "MemorySize": 1152,
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "alpha-api",
+            "ARC_ENV": "production",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "ARC_SESSION_TABLE_NAME": "jwe",
+            "ARC_STACK_NAME": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            }
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {
+          "OptionsWaterSystemHistoryHTTPEvent": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/WaterSystemHistory",
+              "Method": "OPTIONS",
               "ApiId": {
                 "Ref": "HTTP"
               }

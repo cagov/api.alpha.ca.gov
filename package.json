@@ -5,6 +5,9 @@
   "scripts": {
     "start": "npx sandbox"
   },
+  "dependencies": {
+    "arc-macro-cors": "^2.0.0"
+  },
   "devDependencies": {
     "@architect/architect": "^10.8.2"
   }

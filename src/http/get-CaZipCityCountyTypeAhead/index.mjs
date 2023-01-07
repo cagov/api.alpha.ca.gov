@@ -1,49 +1,237 @@
-// learn more about HTTP functions here: https://arc.codes/http
+//usage 
+//CaZipCityCountyTypeAhead?citymode=true&countymode=false&q=84116
+import * as fs from 'fs';
+const counties = getCounties().map(x=>x.name).sort();
+const zips = JSON.parse(fs.readFileSync('./unique-zips-slim.json','utf8'));
+const cities = JSON.parse(fs.readFileSync('./just-cities.json','utf8'));
+const maxrows = 10;
+
 export async function handler (req) {
-  return {
-    statusCode: 200,
-    headers: {
-      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
-      'content-type': 'text/html; charset=utf8'
-    },
-    body: `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Architect</title>
-  <style>
-     * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; } .max-width-320 { max-width: 20rem; } .margin-left-8 { margin-left: 0.5rem; } .margin-bottom-16 { margin-bottom: 1rem; } .margin-bottom-8 { margin-bottom: 0.5rem; } .padding-32 { padding: 2rem; } .color-grey { color: #333; } .color-black-link:hover { color: black; } 
-  </style>
-</head>
-<body class="padding-32">
-  <div class="max-width-320">
-    <img src="https://assets.arc.codes/logo.svg" />
-    <div class="margin-left-8">
-      <div class="margin-bottom-16">
-        <h1 class="margin-bottom-16">
-          Hello from an Architect Node.js function!
-        </h1>
-        <p class="margin-bottom-8">
-          Get started by editing this file at:
-        </p>
-        <code>
-          src/http/get-CaZipCityCountyTypeAhead/index.mjs
-        </code>
-      </div>
-      <div>
-        <p class="margin-bottom-8">
-          View documentation at:
-        </p>
-        <code>
-          <a class="color-grey color-black-link" href="https://arc.codes">https://arc.codes</a>
-        </code>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-`
+
+  let query = req.queryStringParameters.q
+  const citymode = (req.queryStringParameters.citymode || "true").toLowerCase() === "true"
+  const countymode = (req.queryStringParameters.countymode || "true").toLowerCase() === "true"
+
+  if (query) {
+      query = query.toLowerCase();
+
+      let results = zips
+          .filter(x=>x.includes(query));
+
+      if(citymode) {
+          results = results.concat(
+              cities.filter(x=>x.toLowerCase().includes(query))
+          );
+      }
+      
+      if(countymode) {
+          results = results.concat(
+              counties.filter(x=>x.toLowerCase().includes(query))
+          );
+      }
+      
+      results = results
+          .sort(
+              (x,y) => 
+                  x.toLowerCase().startsWith(query) === y.toLowerCase().startsWith(query)
+                  ? x.localeCompare(y)
+                  : x.toLowerCase().startsWith(query) 
+                      ? -1 
+                      : 1
+                  )
+          .slice(0,maxrows);
+
+      return {
+        statusCode: 200,
+        headers: {
+            'Content-Type' : 'application/json',
+            "Cache-Control" : "public, max-age=84600" //1 day
+        },
+        body: JSON.stringify({match: results})
+      }
   }
+  else 
+      return {
+          status: 400,
+          body: "Please pass a q=(query) on the query string"
+      }
+}
+
+function getCounties() {
+  return [
+      {
+      name: 'Modoc'
+      },
+      {
+      name: 'Siskiyou'
+      },
+      {
+      name: 'Del Norte'
+      },
+      {
+      name: 'Humboldt'
+      },
+      {
+      name: 'Trinity'
+      },
+      {
+      name: 'Shasta'
+      },
+      {
+      name: 'Lassen'
+      },
+      {
+      name: 'Mendocino'
+      },
+      {
+      name: 'Tehama'
+      },
+      {
+      name: 'Plumas'
+      },
+      {
+      name: 'Lake'
+      },
+      {
+      name: 'Colusa'
+      },
+      {
+      name: 'Glenn'
+      },
+      {
+      name: 'Butte'
+      },
+      {
+      name: 'Yuba'
+      },
+      {
+      name: 'Sierra'
+      },
+      {
+      name: 'Nevada'
+      },
+      {
+      name: 'Alameda'
+      },
+      {
+      name: 'Alpine'
+      },
+      {
+      name: 'Amador'
+      },
+      {
+      name: 'Contra Costa'
+      },
+      {
+      name: 'Fresno'
+      },
+      {
+      name: 'Los Angeles'
+      },
+      {
+      name: 'Merced'
+      },
+      {
+      name: 'San Mateo'
+      },
+      {
+      name: 'Santa Clara'
+      },
+      {
+      name: 'Mono'
+      },
+      {
+      name: 'Napa'
+      },
+      {
+      name: 'Orange'
+      },
+      {
+      name: 'San Benito'
+      },
+      {
+      name: 'San Diego'
+      },
+      {
+      name: 'San Luis Obispo'
+      },
+      {
+      name: 'Santa Barbara'
+      },
+      {
+      name: 'Sonoma'
+      },
+      {
+      name: 'Sutter'
+      },
+      {
+      name: 'Tulare'
+      },
+      {
+      name: 'Yolo'
+      },
+      {
+      name: 'Madera'
+      },
+      {
+      name: 'Calaveras'
+      },
+      {
+      name: 'Mariposa'
+      },
+      {
+      name: 'Solano'
+      },
+      {
+      name: 'Inyo'
+      },
+      {
+      name: 'Monterey'
+      },
+      {
+      name: 'Stanislaus'
+      },
+      {
+      name: 'Marin'
+      },
+      {
+      name: 'San Joaquin'
+      },
+      {
+      name: 'Kings'
+      },
+      {
+      name: 'San Francisco'
+      },
+      {
+      name: 'Imperial'
+      },
+      {
+      name: 'Placer'
+      },
+      {
+      name: 'Tuolumne'
+      },
+      {
+      name: 'Ventura'
+      },
+      {
+      name: 'Santa Cruz'
+      },
+      {
+      name: 'Kern'
+      },
+      {
+      name: 'San Bernardino'
+      },
+      {
+      name: 'El Dorado'
+      },
+      {
+      name: 'Sacramento'
+      },
+      {
+      name: 'Riverside'
+      }
+  ];
 }
