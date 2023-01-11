@@ -1,7 +1,7 @@
 {
   "name": "api.alpha.ca.gov",
-  "version": "0.0.0",
-  "description": "A fresh new Architect project!",
+  "version": "1.0.0",
+  "description": "API endpoints for alpha.ca.gov (now retired)",
   "scripts": {
     "start": "npx sandbox"
   },

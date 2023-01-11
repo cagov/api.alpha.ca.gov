@@ -3,7 +3,7 @@ const foodData = JSON.parse(fs.readFileSync('./foods.json','utf8'));
 import haversine from './haversine.js';
 
 export async function handler (req) {
-  if (req.queryStringParameters.lat || (req.body && req.body.lon)) {
+  if ((req.queryStringParameters && req.queryStringParameters.lat) || (req.body && req.body.lon)) {
     let position = [parseFloat(req.queryStringParameters.lon),parseFloat(req.queryStringParameters.lat)];
     let coords = { type: 'Feature', geometry: { coordinates: position } };    
     var sortedLocs = foodData.features.sort(function (a, b) {

@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Exported by architect/package@8.2.2 on 2023-01-07T00:33:19.245Z
+Description: Exported by architect/package@8.2.2 on 2023-01-11T21:05:32.244Z
 Resources:
   Role:
     Type: AWS::IAM::Role
@@ -463,7 +463,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://alpha-api-cfn-deployments-80e6b/1a9c5fcfb0e6e233ca0e1b2454b58591
+      CodeUri: s3://alpha-api-cfn-deployments-80e6b/b09b9f32f7e4646bf01b7fe16b020d19
       Runtime: nodejs16.x
       Architectures:
       - x86_64
@@ -535,7 +535,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      CodeUri: s3://alpha-api-cfn-deployments-80e6b/aeafdf1bd389d909dbc05a831c7abd8d
+      CodeUri: s3://alpha-api-cfn-deployments-80e6b/e739e1220a0a8b1ff1dc7e0eab772854
       Runtime: nodejs16.x
       Architectures:
       - x86_64
