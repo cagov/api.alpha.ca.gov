@@ -1,0 +1,14 @@
+{
+  "name": "api.alpha.ca.gov",
+  "version": "1.0.0",
+  "description": "API endpoints for alpha.ca.gov (now retired)",
+  "scripts": {
+    "start": "npx sandbox"
+  },
+  "dependencies": {
+    "arc-macro-cors": "^2.0.0"
+  },
+  "devDependencies": {
+    "@architect/architect": "^10.8.2"
+  }
+}
